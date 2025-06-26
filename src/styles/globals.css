@@ -1,0 +1,292 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
+    
+    --card: 222 47% 6%;
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 222 47% 6%;
+    --popover-foreground: 210 40% 98%;
+    
+    --primary: 221 83% 58%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 15 100% 55%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20.2% 65.1%;
+    
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+    
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 224 71.4% 4.1%;
+    
+    --radius: 0.5rem;
+    
+    /* Variáveis de padrões */
+    --grid-line-color: rgba(58, 109, 240, 0.05);
+    --dots-color: rgba(58, 109, 240, 0.1);
+    --glassmorphism-border: rgba(255, 255, 255, 0.1);
+    
+    /* Variáveis de gradiente para texto */
+    --gradient-start: #FF8A50;  /* Laranja mais claro */
+    --gradient-end: #FF5733;    /* Laranja atual */
+    
+    /* Variáveis de gradiente para texto */
+    --gradient-start: #FF8A50;  /* Laranja mais claro */
+    --gradient-end: #FF5733;    /* Laranja atual */
+    
+    /* Variáveis para scrollbar */
+    --scrollbar-color: #FF5733;
+    --scrollbar-hover-color: #FF8A50;
+  }
+  
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    
+    --card: 0 0% 98%;
+    --card-foreground: 222 47% 11%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 15 100% 50%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 46%;
+    
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
+    
+    /* Variáveis de padrões para tema claro */
+    --grid-line-color: rgba(58, 109, 240, 0.15);
+    --dots-color: rgba(58, 109, 240, 0.2);
+    --glassmorphism-border: rgba(58, 109, 240, 0.15);
+    
+    /* Variáveis de gradiente para texto no tema claro */
+    --gradient-start: #3A6DF0;  /* Azul atual */
+    --gradient-end: #1E3FA3;    /* Azul mais escuro */
+    
+    /* Variáveis para scrollbar no tema claro */
+    --scrollbar-color: #3A6DF0;
+    --scrollbar-hover-color: #1E3FA3;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans overflow-x-hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Scrollbar personalizada - configurações básicas */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+  
+  /* Configuração básica de scrollbar - será sobrescrita pelo JavaScript */
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full;
+  }
+  
+  /* Correção para evitar elementos flutuantes indesejados */
+  html, body {
+    @apply overflow-x-hidden;
+    width: 100%;
+    position: relative;
+  }
+  
+  /* Garante que não haja elementos flutuantes fora da viewport */
+  #__next, main {
+    @apply overflow-x-hidden;
+    position: relative;
+  }
+}
+
+@layer components {
+  /* Texto adaptativo que funciona em temas claros e escuros */
+  .text-adaptive {
+    @apply text-primary-foreground;
+  }
+  
+  /* Glassmorphism adaptativo para temas claros e escuros */
+  .glassmorphism {
+    @apply bg-card/60 backdrop-blur-md shadow-md;
+    border: 1px solid var(--glassmorphism-border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  
+  /* Cartões para o tema claro */
+  .light .light-card {
+    @apply bg-muted/40;
+    border: 1px solid rgba(58, 109, 240, 0.15);
+  }
+  
+  .animated-border-gradient {
+    position: relative;
+    border-radius: inherit;
+    overflow: hidden;
+  }
+  
+  .animated-border-gradient::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end), var(--gradient-start));
+    background-size: 400% 400%;
+    z-index: -1;
+    animation: gradient 8s ease-in-out infinite;
+    border-radius: inherit;
+  }
+  
+  /* Grid pattern adaptativo para temas claros e escuros */
+  .grid-pattern {
+    position: relative;
+  }
+  
+  .grid-pattern::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+                      linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+    background-size: 24px 24px;
+    z-index: -1;
+    mask-image: radial-gradient(ellipse at center, white 40%, transparent 70%);
+  }
+  
+  /* Dots pattern adaptativo para temas claros e escuros */
+  .dots-pattern {
+    position: relative;
+  }
+  
+  .dots-pattern::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--dots-color) 2px, transparent 2px);
+    background-size: 30px 30px;
+    z-index: -1;
+    mask-image: radial-gradient(ellipse at center, white 40%, transparent 70%);
+  }
+  
+  .text-gradient {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+  }
+  
+  /* Ícone com cor do tema */
+  .theme-icon {
+    color: #FF5733;
+  }
+  
+  .light .theme-icon {
+    color: #3A6DF0;
+  }
+  
+  /* Botão com gradiente */
+  .bg-gradient-to-r.from-primary-500.to-secondary-500 {
+    background-image: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+  }
+  
+  /* Fundo com gradiente temático */
+  .theme-gradient-bg {
+    background-image: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+  }
+  
+  /* Gradiente vertical temático */
+  .theme-gradient-vertical {
+    background-image: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
+  }
+  
+  /* Gradiente horizontal temático para linhas */
+  .theme-gradient-horizontal {
+    background-image: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+  }
+  
+  .text-gradient-image {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .text-gradient-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    mask: url('/images/logo.svg') no-repeat center / contain;
+    -webkit-mask: url('/images/logo.svg') no-repeat center / contain;
+  }
+  
+  .text-gradient-image img {
+    opacity: 0;
+  }
+  
+  .logo-gradient {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .logo-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    mask: var(--mask);
+    -webkit-mask: var(--mask);
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-position: center;
+  }
+  
+  .logo-gradient img {
+    opacity: 0;
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+} 
