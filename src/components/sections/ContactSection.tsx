@@ -16,19 +16,53 @@ const ContactSection = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Log temporário para verificar a URL do webhook
+    console.log('URL do Webhook:', process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL);
+    
     setFormState("submitting");
     
-    // Simulação de envio - em produção, conecte a um backend real
-    setTimeout(() => {
+    try {
+      const formData = new FormData(e.currentTarget);
+      
+      const data = {
+        nome: formData.get('name'),
+        email: formData.get('email'),
+        empresa: formData.get('company'),
+        mensagem: formData.get('message'),
+      };
+
+      const response = await fetch(process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || '', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          // Adicione headers adicionais se necessário
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Falha ao enviar formulário');
+      }
+
+      // Sucesso
       setFormState("success");
-      // Resetar o formulário
       (e.target as HTMLFormElement).reset();
       
       // Retornar ao estado inicial após 5 segundos
       setTimeout(() => {
         setFormState("idle");
       }, 5000);
-    }, 1500);
+      
+    } catch (error) {
+      console.error('Erro ao enviar formulário:', error);
+      setFormState("error");
+      
+      // Retornar ao estado inicial após 5 segundos
+      setTimeout(() => {
+        setFormState("idle");
+      }, 5000);
+    }
   };
 
   return (
